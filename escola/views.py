@@ -1,18 +1,3 @@
-## Modo com Django puro ##
-
-# from django.http import JsonResponse
-
-# def estudantes(request):
-#     if request.method == 'GET':
-#         estudante = {
-#             'id': '1',
-#             'nome': 'lais'
-#         }
-#     return JsonResponse(estudante) #Transformando o dicionario py em JSON(format de api)
-
-
-## Modo com Rest Framework ##
-
 from escola.models import Estudante,Curso, Matricula
 from escola.serializers import EstudanteSerializer, CursoSerializer, MatriculaSerializer, ListaMatriculasEstudanteSerializer, ListaMatriculasCursoSerializer
 from rest_framework import viewsets, generics
