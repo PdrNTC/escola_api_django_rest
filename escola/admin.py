@@ -7,6 +7,7 @@ class Estudantes(admin.ModelAdmin):
     list_display_links = ('id', 'nome',)
     list_per_page = 20
     search_fields = ('nome',)
+    ordering = ('nome',)
 
 ## Registrando o modelo no admin
 admin.site.register(Estudante, Estudantes)
