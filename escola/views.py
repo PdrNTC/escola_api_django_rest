@@ -8,7 +8,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 class EstudanteViewSet(viewsets.ModelViewSet):
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
-    queryset = Estudante.objects.all()
+    queryset = Estudante.objects.all().order_by("id")
     #serializer_class = EstudanteSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter] ## Fazendo ordenação dos campos na API ##
     ordering_fields = ['nome']
@@ -22,20 +22,20 @@ class EstudanteViewSet(viewsets.ModelViewSet):
 class CursoViewSet(viewsets.ModelViewSet):
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
-    queryset = Curso.objects.all()
+    queryset = Curso.objects.all().order_by("id")
     serializer_class = CursoSerializer
 
 class MatriculaViewSet(viewsets.ModelViewSet):
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
-    queryset = Matricula.objects.all()
+    queryset = Matricula.objects.all().order_by("id")
     serializer_class = MatriculaSerializer
 
 class ListaMatriculaEstudante(generics.ListAPIView):
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
     def get_queryset(self):
-        queryset = Matricula.objects.filter(estudante_id=self.kwargs['pk'])
+        queryset = Matricula.objects.filter(estudante_id=self.kwargs['pk']).order_by("id")
         return queryset
     
     serializer_class = ListaMatriculasEstudanteSerializer
@@ -44,7 +44,7 @@ class ListaMatriculaCurso(generics.ListAPIView):
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
     def get_queryset(self):
-        queryset = Matricula.objects.filter(curso_id=self.kwargs['pk'])
+        queryset = Matricula.objects.filter(curso_id=self.kwargs['pk']).order_by("id")
         return queryset
     
     serializer_class = ListaMatriculasCursoSerializer
