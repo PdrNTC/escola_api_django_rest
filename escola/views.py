@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.throttling import UserRateThrottle
 from escola.throttles import MatriculaAnonRateThrottle
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 class EstudanteViewSet(viewsets.ModelViewSet):
     """
@@ -27,8 +28,8 @@ class EstudanteViewSet(viewsets.ModelViewSet):
     - Se a versão da API for 'v2', usa EstudanteSerializerV2.
     """
 
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
     queryset = Estudante.objects.all().order_by("id")
     #serializer_class = EstudanteSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter] ## Fazendo ordenação dos campos na API ##
@@ -48,10 +49,11 @@ class CursoViewSet(viewsets.ModelViewSet):
     Métodos HTPP Permitidos:
     - GET, POST, PUT, PATCH, DELETE
     """
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
     queryset = Curso.objects.all().order_by("id")
     serializer_class = CursoSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly] ## Permitindo o front end acessar a rota sem estar autenticado ##
 
 class MatriculaViewSet(viewsets.ModelViewSet):
     """
@@ -65,8 +67,8 @@ class MatriculaViewSet(viewsets.ModelViewSet):
     - MatriculaAnonRateThrottle: limite de taxa para usuários anônimos.
     - UserRateThrottle: limite de taxa para usuários autenticados.
     """
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
     queryset = Matricula.objects.all().order_by("id")
     serializer_class = MatriculaSerializer
     throttle_classes = [UserRateThrottle, MatriculaAnonRateThrottle] ## Herdando da classe throthle com requisição diferente ##
@@ -79,8 +81,8 @@ class ListaMatriculaEstudante(generics.ListAPIView):
     Parâmetros:
     - pk (int): o identificador primário do objeto. Deve ser um número inteiro.
     """
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
     def get_queryset(self):
         queryset = Matricula.objects.filter(estudante_id=self.kwargs['pk']).order_by("id")
         return queryset
@@ -94,8 +96,8 @@ class ListaMatriculaCurso(generics.ListAPIView):
     Parâmetros:
     - pk (int): o identificador primário do objeto. Deve ser um número inteiro.
     """
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
     def get_queryset(self):
         queryset = Matricula.objects.filter(curso_id=self.kwargs['pk']).order_by("id")
         return queryset
